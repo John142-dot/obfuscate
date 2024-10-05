@@ -105,14 +105,14 @@
             const variableMap = {};
             code = code.replace(variableRegex, (match) => {
                 if (!variableMap[match] && !isKeyword(match)) {
-                    const obfuscatedName = generateRandomString(8);
+                    const obfuscatedName = generateRandomString(12); // Longer names
                     variableMap[match] = obfuscatedName;
                     return obfuscatedName;
                 }
                 return match;
             });
 
-            // Obfuscate strings with a simple encoding method
+            // Obfuscate strings with more complex encoding
             code = code.replace(/(["'])(.*?)\1/g, (match, p1, p2) => {
                 return `${p1}${encryptString(p2)}${p1}`; // Replace with encrypted string
             });
@@ -126,7 +126,12 @@
         }
 
         function encryptString(str) {
-            return btoa(str.split('').reverse().join('')); // Base64 encoding and reversing
+            // Create a simple character shift for more complexity
+            let encoded = '';
+            for (let char of str) {
+                encoded += String.fromCharCode(char.charCodeAt(0) + 3); // Shift each character
+            }
+            return btoa(encoded); // Base64 encoding
         }
 
         document.getElementById('obfuscateButton').addEventListener('click', () => {
