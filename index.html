@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+p<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lua Obfuscator - Zonkey</title>
+    <title>Lua Obfuscator - Epik!</title>
     <style>
         body {
             background-color: #121212;
@@ -37,7 +37,7 @@
             background: #1e1e1e;
             color: #E0E0E0;
             padding: 15px;
-            font-size: 16px; /* Set to match the output text size */
+            font-size: 16px;
             border: 1px solid #00CFFF;
             border-radius: 5px;
             resize: none;
@@ -66,7 +66,6 @@
             color: #E0E0E0;
             border: 1px solid #00CFFF;
             margin-top: 10px;
-            font-size: 16px; /* Set to match the input text size */
         }
 
         .footer {
@@ -80,7 +79,7 @@
 <body>
 
     <div class="editor-container">
-        <h2>Lua Obfuscator - Zonkey</h2>
+        <h2>Lua Obfuscator - MoonSec</h2>
         <textarea id="codeInput" placeholder="Type your Lua code here..."></textarea>
         <button class="button" id="obfuscateButton">Obfuscate Code</button>
         <textarea id="outputCode" class="output-textarea" placeholder="Obfuscated code will appear here..." readonly></textarea>
@@ -106,19 +105,21 @@
             const variableMap = {};
             code = code.replace(variableRegex, (match) => {
                 if (!variableMap[match] && !isKeyword(match)) {
-                    const obfuscatedName = generateRandomString(10); // Increase length for obfuscation
+                    const obfuscatedName = generateRandomString(12); // Longer names
                     variableMap[match] = obfuscatedName;
                     return obfuscatedName;
                 }
                 return match;
             });
 
-            // Obfuscate strings with a simple encoding method
+            // Obfuscate strings with a more complex encoding method
             code = code.replace(/(["'])(.*?)\1/g, (match, p1, p2) => {
                 return `${p1}${encryptString(p2)}${p1}`; // Replace with encrypted string
             });
 
-            return code + '\n-- Obfuscated by Zonkey!';
+            // Add additional obfuscation layers
+            const additionalObfuscation = `local _0x${generateRandomString(4)} = function() end`;
+            return additionalObfuscation + '\n' + code + '\n-- Obfuscated by MoonSec!';
         }
 
         function isKeyword(name) {
@@ -127,7 +128,7 @@
         }
 
         function encryptString(str) {
-            return btoa(str.split('').reverse().join('')); // Base64 encoding and reversing
+            return btoa(str.split('').reverse().join('').replace(/[aeiou]/g, '')); // Base64 encoding and removing vowels
         }
 
         document.getElementById('obfuscateButton').addEventListener('click', () => {
