@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lua Obfuscator</title>
+    <style>
+        body {
+            background-color: #1d1f20;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .editor-container {
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            background: #1d1f20;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            resize: none;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00ffff; 
+            color: #000; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-top: 10px; 
+        }
+
+        .raw-link {
+            display: none; 
+            margin-top: 10px; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="editor-container">
+        <h2 style="text-align:center;">Lua Obfuscator</h2>
+        <textarea id="codeInput" placeholder="Type your Lua code here..."></textarea>
+        <button class="button" id="obfuscateButton">Obfuscate Code</button>
+        <textarea id="outputCode" placeholder="Obfuscated code will appear here..." readonly></textarea>
+    </div>
+
+    <script>
+        // Function to generate random strings for obfuscation
+        function generateRandomString(length) {
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        // Function to obfuscate the Lua code
+        function obfuscateCode(code) {
+            // Remove comments
+            code = code.replace(/--.*$/gm, '');
+
+            // Obfuscate variable names
+            const variableRegex = /\b[a-zA-Z_][a-zA-Z0-9_]*\b/g;
+            const variableMap = {};
+            const obfuscatedCode = code.replace(variableRegex, (match) => {
+                if (!variableMap[match] && !['function', 'local', 'end', 'if', 'then', 'else', 'return', 'for', 'in', 'do', 'while', 'repeat', 'until', 'break', 'goto', 'nil', 'true', 'false'].includes(match)) {
+                    const obfuscatedName = generateRandomString(8);
+                    variableMap[match] = obfuscatedName;
+                    return obfuscatedName;
+                }
+                return match;
+            });
+
+            // Obfuscate strings
+            const finalCode = obfuscatedCode.replace(/(["'])(.*?)\1/g, (match, p1, p2) => {
+                return `${p1}${generateRandomString(10)}${p1}`; // Replace with random string
+            });
+
+            // Add obfuscation comment at the end
+            return finalCode + '\n-- Obfuscated by Zonkey!';
+        }
+
+        // Event listener for the obfuscate button
+        document.getElementById('obfuscateButton').addEventListener('click', () => {
+            const codeInput = document.getElementById('codeInput').value;
+            const obfuscatedCode = obfuscateCode(codeInput);
+            document.getElementById('outputCode').value = obfuscatedCode;
+        });
+    </script>
+
+</body>
+</html>
