@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lua Obfuscator - Epik!</title>
+    <title>Lua Obfuscator - Zonkey!</title>
     <style>
         body {
             background-color: #121212;
@@ -28,7 +28,7 @@
             text-align: center;
             margin-bottom: 20px;
             font-size: 24px;
-            color: #00CFFF; /* MoonSec color */
+            color: #00CFFF; /* Zonkey color */
         }
 
         textarea {
@@ -79,7 +79,7 @@
 <body>
 
     <div class="editor-container">
-        <h2>Lua Obfuscator - MoonSec</h2>
+        <h2>Lua Obfuscator - Zonkey</h2>
         <textarea id="codeInput" placeholder="Type your Lua code here..."></textarea>
         <button class="button" id="obfuscateButton">Obfuscate Code</button>
         <textarea id="outputCode" class="output-textarea" placeholder="Obfuscated code will appear here..." readonly></textarea>
@@ -94,6 +94,15 @@
                 result += characters.charAt(Math.floor(Math.random() * characters.length));
             }
             return result;
+        }
+
+        function addDummyFunctions() {
+            let dummies = '';
+            for (let i = 0; i < 20; i++) {
+                const dummyFunctionName = generateRandomString(8);
+                dummies += `local ${dummyFunctionName} = function() end\n`;
+            }
+            return dummies;
         }
 
         function obfuscateCode(code) {
@@ -117,9 +126,12 @@
                 return `${p1}${encryptString(p2)}${p1}`; // Replace with encrypted string
             });
 
+            // Add dummy functions
+            const dummyFunctions = addDummyFunctions();
+
             // Add additional obfuscation layers
             const additionalObfuscation = `local _0x${generateRandomString(4)} = function() end`;
-            return additionalObfuscation + '\n' + code + '\n-- Obfuscated by MoonSec!';
+            return dummyFunctions + additionalObfuscation + '\n' + code + '\n-- Obfuscated by Zonkey!';
         }
 
         function isKeyword(name) {
